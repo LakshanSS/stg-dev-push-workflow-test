@@ -15,38 +15,22 @@ on:
         required: true
 
 jobs:
-    # build:
-    #     runs-on: ubuntu-latest
-    #     env: 
-    #       BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #         - name: Ballerina Pack
-    #           uses: ballerina-platform/ballerina-action@slbeta6
-    #           with:
-    #               args:
-    #                   pack
-    #         - name: Ballerina Push
-    #           uses: ballerina-platform/ballerina-action@slbeta6
-    #           with:
-    #               args:
-    #                   push
-    #           env:
-    #               BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
-    d-build:
-      runs-on: ubuntu-latest
-      env: 
-        BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
-      container:
-        image: ballerina/ballerina:${{ github.event.inputs.bal_dist_version }}
-        options: --user root
-      steps:
-        - name: Install Git
-          run: apk --no-cache add git
-        - uses: actions/checkout@v2
-        - name: Build with Gradle
-          env:
-            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
-            JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-          run: |
-            ./gradlew build -Prelease=true -Premote=true
+    build:
+        runs-on: ubuntu-latest
+        env: 
+          BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
+        steps:
+            - uses: actions/checkout@v2
+            - name: Ballerina Pack
+              uses: ballerina-platform/ballerina-action@slbeta6
+              with:
+                  args:
+                      pack
+            - name: Ballerina Push
+              uses: ballerina-platform/ballerina-action@${{ inputs.bal_dist_version }}
+              with:
+                  args:
+                      push
+              env:
+                  BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
+
