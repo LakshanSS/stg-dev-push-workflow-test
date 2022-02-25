@@ -1,0 +1,9 @@
+[package]
+distribution = "slbeta6"
+org = "lakshansivagnanasothy"
+name = "test.connector.a"
+version= "1.0.0"
+authors = ["LakshanS"]
+
+[build-options]
+observabilityIncluded = true
