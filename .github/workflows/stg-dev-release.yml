@@ -27,7 +27,7 @@ jobs:
                   args:
                       pack
             - name: Ballerina Push
-              uses: ballerina-platform/ballerina-action@${{ inputs.bal_dist_version }}
+              uses: ballerina-platform/ballerina-action${{ github.event.inputs.bal_dist_version }}
               with:
                   args:
                       push
