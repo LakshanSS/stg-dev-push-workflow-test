@@ -3,9 +3,6 @@ name: D-Push to Staging/Dev Ballerina Central
 on:
   workflow_dispatch:
     inputs:
-      bal_dist_version:
-        description: Docker img version of Ballerina distribution
-        required: true
       bal_central_environment:
         description: Ballerina Central Environment
         type: choice
@@ -20,13 +17,12 @@ jobs:
       env: 
         BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
       container:
-        image: ballerina/ballerina:${{ github.event.inputs.bal_dist_version }}
+        image: ballerina/ballerina:2201.0.0
         options: --user root
       steps:
         - name: Install Git
           run: apk --no-cache add git
         - uses: actions/checkout@v2
-
 
         - name: Push to Staging
           if: github.event.inputs.bal_central_environment == 'STAGE'
