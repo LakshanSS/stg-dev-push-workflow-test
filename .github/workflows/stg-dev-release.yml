@@ -1,0 +1,35 @@
+name: Push to Staging/Dev Ballerina Central
+
+on:
+  workflow_dispatch:
+    inputs:
+      bal_dist_version:
+        description: Ballerina distribution version
+        required: true
+      bal_central_environment:
+        description: Ballerina Central Environment
+        type: choice
+        options:
+        - STAGE
+        - DEV
+        required: true
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env: 
+          BALLERINA_${{ github.event.inputs.bal_dist_version }}_CENTRAL: true
+        steps:
+            - uses: actions/checkout@v2
+            - name: Ballerina Pack
+              uses: ballerina-platform/ballerina-action@${{ github.event.inputs.bal_dist_version }}
+              with:
+                  args:
+                      pack
+            - name: Ballerina Push
+              uses: ballerina-platform/ballerina-action@${{ github.event.inputs.bal_dist_version }}
+              with:
+                  args:
+                      push
+              env:
+                  BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
