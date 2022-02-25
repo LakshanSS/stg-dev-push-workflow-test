@@ -26,9 +26,20 @@ jobs:
         - name: Install Git
           run: apk --no-cache add git
         - uses: actions/checkout@v2
-        - name: Build with Gradle
+
+
+        - name: Push to Staging
+          if: bal_central_environment == 'STAGE'
           env:
-            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
+            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.STAGE_BCENTRAL_ACCESS_TOKEN }}
+            JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          run: |
+            ./gradlew build -Prelease=true -Premote=true
+
+        - name: Push to Dev
+          if: bal_central_environment == 'DEV'
+          env:
+            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.DEV_BCENTRAL_ACCESS_TOKEN }}
             JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           run: |
             ./gradlew build -Prelease=true -Premote=true
