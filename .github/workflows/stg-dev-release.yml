@@ -18,16 +18,16 @@ jobs:
     build:
         runs-on: ubuntu-latest
         env: 
-          BALLERINA_${{ github.event.inputs.bal_dist_version }}_CENTRAL: true
+          BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
         steps:
             - uses: actions/checkout@v2
             - name: Ballerina Pack
-              uses: ballerina-platform/ballerina-action@${{ github.event.inputs.bal_dist_version }}
+              uses: ballerina-platform/ballerina-action/@${{ github.event.inputs.bal_dist_version }}
               with:
                   args:
                       pack
             - name: Ballerina Push
-              uses: ballerina-platform/ballerina-action@${{ github.event.inputs.bal_dist_version }}
+              uses: ballerina-platform/ballerina-action/@${{ github.event.inputs.bal_dist_version }}
               with:
                   args:
                       push
